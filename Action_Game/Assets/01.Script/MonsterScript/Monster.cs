@@ -60,6 +60,12 @@ public class Monster : MonoBehaviour
         get => key;
         set => key = value;
     }
+    SpriteRenderer sprite;
+    public SpriteRenderer Sprite
+    {
+        get => sprite;
+        set => sprite = value;
+    }
     Dictionary<string, MonsterState> monsterDic = new Dictionary<string, MonsterState>();
     #endregion
 
@@ -80,6 +86,7 @@ public class Monster : MonoBehaviour
 
     protected virtual void Awake()
     {
+        sprite = GetComponent<SpriteRenderer>();
         SetState<MonsterIdleState>(nameof(MonsterIdleState));
         anim = GetComponent<Animator>();
     }

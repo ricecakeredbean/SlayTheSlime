@@ -107,9 +107,11 @@ public class MonsterMoveState : MonsterState
 {
     public override void Update()
     {
-        float deg = Mathf.Atan2(monster.Dir.y, monster.Dir.x) * Mathf.Rad2Deg;
-        monster.transform.rotation = Quaternion.Euler(new Vector3(0, 0, deg));
-        monster.transform.Translate(Vector3.right*monster.MoveSpeed*Time.deltaTime);
+        //float deg = Mathf.Atan2(monster.Dir.y, monster.Dir.x) * Mathf.Rad2Deg;
+        //monster.transform.rotation = Quaternion.Euler(new Vector3(0, 0, deg));
+        monster.Sprite.flipX = monster.transform.position.x > Player.Instance.transform.position.x;
+        //몬스터 플레이어 방향으로 가기
+        monster.transform.position = Vector3.MoveTowards(monster.transform.position, Player.Instance.transform.position, monster.MoveSpeed * Time.deltaTime);
         if (monster.Dis > 5.5f)
             monster.SetState<MonsterIdleState>(nameof(MonsterIdleState));
         if (monster.Dis <= 0.5f)
