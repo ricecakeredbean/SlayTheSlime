@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     #region Varible
+    public GameObject weaponHit;
     public static Player Instance;
     private PlayerState currentState;
     [SerializeField] float moveSpeed = 5f;

@@ -59,8 +59,9 @@ public class PlayerAttackState : PlayerState
     IEnumerator P_Attack()
     {
         player.Anim.SetBool("isAttack", true);
-        Debug.Log("Hit");
+        player.weaponHit.SetActive(true);
         yield return new WaitForSeconds(0.4f);
+        player.weaponHit.SetActive(false);
         player.Anim.SetBool("isAttack", false);
         player.SetState<PlayerIdleState>(nameof(PlayerIdleState));
     }
@@ -114,7 +115,7 @@ public class MonsterMoveState : MonsterState
         monster.transform.position = Vector3.MoveTowards(monster.transform.position, Player.Instance.transform.position, monster.MoveSpeed * Time.deltaTime);
         if (monster.Dis > 5.5f)
             monster.SetState<MonsterIdleState>(nameof(MonsterIdleState));
-        if (monster.Dis <= 0.5f)
+        if (monster.Dis <= 1.2f)
         {
             monster.SetState<MonsterAttackState>(nameof(MonsterAttackState));
         }
@@ -147,6 +148,7 @@ public class MonsterHitState : MonsterState
     }
     public override void OnEnter(Monster monster)
     {
+        monster.Hp--;
         base.OnEnter(monster);
         if (monster.Hp <= 0)
         {
@@ -161,6 +163,6 @@ public class MonsterHitState : MonsterState
 }
 public class MonsterDeadState : MonsterState
 {
-
+    
 }
 #endregion

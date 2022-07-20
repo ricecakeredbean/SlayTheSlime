@@ -17,6 +17,7 @@ public enum MobType
 public class Monster : MonoBehaviour
 {
     #region Mob_Varible
+    public static Monster Instance;
     private MobType mType;
     public MobType MType
     {
@@ -86,6 +87,7 @@ public class Monster : MonoBehaviour
 
     protected virtual void Awake()
     {
+        Instance = this;
         sprite = GetComponent<SpriteRenderer>();
         SetState<MonsterIdleState>(nameof(MonsterIdleState));
         anim = GetComponent<Animator>();
@@ -96,5 +98,12 @@ public class Monster : MonoBehaviour
         currentState.Update();
         dir = Player.Instance.transform.position - transform.position;
         Dis = Vector3.Distance(transform.position, Player.Instance.transform.position);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("PHit"))
+        {
+            SetState<MonsterHitState>(nameof(MonsterHitState));
+        }
     }
 }
