@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum MobType
 {
-    slime,
+    Slime,
     BigSlime,
     SkeletonWarrior,
     BronzeKnight,
@@ -26,7 +26,7 @@ public class Monster : MonoBehaviour
         {
             switch(value)
             {
-                case MobType.slime:
+                case MobType.Slime:
                     Hp = 5;
                     damage = 1;
                     break;
@@ -34,27 +34,34 @@ public class Monster : MonoBehaviour
             mType = value;
         }
     }
+
     private int hp;
     public int Hp
     {
         get => hp;
         set => hp = value;
     }
+
     private int damage;
     public int Damage => damage;
+
     private MonsterState currentState;
     private float moveSpeed = 3f;
     public float MoveSpeed => moveSpeed;
-    Animator anim;
+
+    private Animator anim;
     public Animator Anim => anim;
-    Vector3 dir;
+
+    private Vector3 dir;
     public Vector3 Dir => dir;
+
     float dis;
     public float Dis
     {
         get => dis;
         set => dis = value;
     }
+
     private string key;
     public string Key
     {
@@ -74,7 +81,7 @@ public class Monster : MonoBehaviour
     {
         if(!monsterDic.ContainsKey(key))
         {
-            Debug.Log($"MobAdded {key}");
+            //Debug.Log($"MobAdded {key}");
             monsterDic.Add(key, new T());
         }
         if(currentState != null)

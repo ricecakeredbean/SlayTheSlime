@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     {
         if(!playerStateDic.ContainsKey(key))
         {
-            Debug.Log($"Added {key}");
+            //Debug.Log($"Added {key}");
             playerStateDic.Add(key, new T());
         }
         if(currentState != null)

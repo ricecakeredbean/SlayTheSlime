@@ -54,7 +54,6 @@ public class PlayerMoveState : PlayerState
 }
 public class PlayerAttackState : PlayerState
 {
-    float attackDelay = 0;
     Coroutine cor;
     IEnumerator P_Attack()
     {
@@ -123,10 +122,15 @@ public class MonsterMoveState : MonsterState
 }
 public class MonsterAttackState : MonsterState
 {
+    Coroutine cor;
     public override void OnEnter(Monster monster)
     {
         base.OnEnter(monster);
-        monster.StartCoroutine(Mob_Attack());
+        if(cor != null)
+        {
+            monster.StopCoroutine(cor);
+        }
+        cor = monster.StartCoroutine(Mob_Attack());
     }
     IEnumerator Mob_Attack()
     {
@@ -163,6 +167,10 @@ public class MonsterHitState : MonsterState
 }
 public class MonsterDeadState : MonsterState
 {
-    
+    public override void OnEnter(Monster monster)
+    {
+        base.OnEnter(monster);
+        monster.gameObject.SetActive(false);
+    }
 }
 #endregion

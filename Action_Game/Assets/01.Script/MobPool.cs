@@ -4,34 +4,52 @@ using UnityEngine;
 
 public class MobPool : MonoBehaviour
 {
-    Dictionary<string, Queue<Monster>> mobObjePools = new Dictionary<string, Queue<Monster>>();
+    public static MobPool Instance;
+    Dictionary<string, PoolData> poolDic = new Dictionary<string, PoolData>();
 
-    public Monster GetMonster(string key,GameObject MonsterPrefab)
+    private void Awake()
     {
-        Monster monster = null;
-        if (mobObjePools.ContainsKey(key))
+        Instance = this;
+    }
+
+    public void AddPool(string key,GameObject prefab)
+    {
+        poolDic.Add(key, new PoolData(prefab));
+    }
+
+    public GameObject GetObject(string key)
+    {
+        PoolData data = poolDic[key];
+        GameObject obj;
+        if (data.stack.Count > 0)
         {
-            if (mobObjePools[key].Count > 0)
-            {
-                monster = mobObjePools[key].Dequeue();
-                monster.gameObject.SetActive(true);
-            }
-            else
-            {
-                monster = Instantiate(MonsterPrefab).GetComponent<Monster>();
-                monster.Key = key;
-                monster.transform.SetParent(transform);
-            }
+            obj = data.stack.Pop();
+            obj.SetActive(true);
+            obj.transform.SetParent(null);
         }
         else
         {
-            mobObjePools.Add(key, new Queue<Monster>());
-
-            monster = Instantiate(MonsterPrefab).GetComponent<Monster>();
-            monster.Key = key;
-            monster.transform.SetParent(transform);
+            obj = Instantiate(data.prefab);
         }
-        return monster;
+        return obj;
     }
-    public void ReturnBullet(string key,)
+
+    public void ReturnObject(string key,GameObject obj)
+    {
+        obj.SetActive(false);
+        obj.transform.SetParent(transform);
+        poolDic[key].stack.Push(obj);
+    }
+
+
+}
+public class PoolData
+{
+    public GameObject prefab;
+    public Stack<GameObject> stack = new Stack<GameObject>();
+    
+    public PoolData(GameObject _prefab)
+    {
+        prefab = _prefab;
+    }
 }

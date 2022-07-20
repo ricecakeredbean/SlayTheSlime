@@ -6,7 +6,7 @@ public class Slime : Monster
 {
     protected override void Awake()
     {
-        MType = MobType.slime;
+        MType = MobType.Slime;
         Key = "" + MType;
         base.Awake();
     }
