@@ -13,13 +13,30 @@ MonoBehaviour:
   m_Name: 1Stage
   m_EditorClassIdentifier: 
   spawnDataList:
-  - time: 1
+  - spawnTime: 1
     type: 0
-  - time: 1
+  - spawnTime: 1
     type: 0
-  - time: 1
+  - spawnTime: 1
     type: 0
-  - time: 1
+  - spawnTime: 1
     type: 0
-  - time: 1
+  - spawnTime: 1
     type: 0
+  - spawnTime: 1
+    type: 1
+  - spawnTime: 1
+    type: 1
+  - spawnTime: 1
+    type: 0
+  - spawnTime: 1
+    type: 0
+  - spawnTime: 1
+    type: 0
+  - spawnTime: 1
+    type: 0
+  - spawnTime: 1
+    type: 1
+  - spawnTime: 1
+    type: 0
+  limitTime: 120

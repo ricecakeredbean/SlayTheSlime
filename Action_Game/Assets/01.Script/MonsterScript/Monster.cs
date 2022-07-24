@@ -27,8 +27,14 @@ public class Monster : MonoBehaviour
             switch(value)
             {
                 case MobType.Slime:
-                    Hp = 5;
+                    hp = 5;
                     damage = 1;
+                    thorTime = 99;
+                    break;
+                case MobType.BigSlime:
+                    hp = 10;
+                    damage = 3;
+                    thorTime = 10;
                     break;
             }
             mType = value;
@@ -45,7 +51,15 @@ public class Monster : MonoBehaviour
     private int damage;
     public int Damage => damage;
 
+    private float thorTime;
+    public float ThrowTime
+    {
+        get => thorTime;
+        set => thorTime = value;
+    }
+
     private MonsterState currentState;
+   
     private float moveSpeed = 3f;
     public float MoveSpeed => moveSpeed;
 
@@ -55,28 +69,35 @@ public class Monster : MonoBehaviour
     private Vector3 dir;
     public Vector3 Dir => dir;
 
-    float dis;
-    public float Dis
-    {
-        get => dis;
-        set => dis = value;
-    }
+    private float dis;
+    public float Dis => dis;
 
-    private string key;
-    public string Key
-    {
-        get => key;
-        set => key = value;
-    }
-    SpriteRenderer sprite;
+    private SpriteRenderer sprite;
     public SpriteRenderer Sprite
     {
         get => sprite;
         set => sprite = value;
     }
+    private Color oringColor;
+    public Color OringColor => oringColor;
+    
     Dictionary<string, MonsterState> monsterDic = new Dictionary<string, MonsterState>();
     #endregion
 
+    protected virtual void Awake()
+    {
+        Instance = this;
+        sprite = GetComponent<SpriteRenderer>();
+        SetState<MonsterIdleState>(nameof(MonsterIdleState));
+        anim = GetComponent<Animator>();
+        oringColor = sprite.color;
+    }
+    public virtual void OnEnable()
+    {
+        SetState<MonsterIdleState>(nameof(MonsterIdleState));
+        sprite.color = oringColor;
+        MType = MType;
+    }
     public void SetState<T>(string key) where T : MonsterState,new()
     {
         if(!monsterDic.ContainsKey(key))
@@ -92,25 +113,42 @@ public class Monster : MonoBehaviour
         currentState.OnEnter(this);
     }
 
-    protected virtual void Awake()
-    {
-        Instance = this;
-        sprite = GetComponent<SpriteRenderer>();
-        SetState<MonsterIdleState>(nameof(MonsterIdleState));
-        anim = GetComponent<Animator>();
-    }
 
     private void Update()
     {
         currentState.Update();
         dir = Player.Instance.transform.position - transform.position;
-        Dis = Vector3.Distance(transform.position, Player.Instance.transform.position);
+        dis = Vector3.Distance(transform.position, Player.Instance.transform.position);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("PHit"))
         {
-            SetState<MonsterHitState>(nameof(MonsterHitState));
+            Hit();
         }
+    }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            Player.Instance.PlayerHit(damage);
+        }
+    }
+    public void ReturnMe()
+    {
+        MobPool.Instance.ReturnObject(System.Enum.GetName(typeof(MobType), MType),this.gameObject);
+    }
+    public virtual void Attack()
+    {
+
+    }
+    public virtual void ThrowAttack()
+    {
+
+    }
+    public void Hit()
+    {
+        hp -= Player.Instance.Damage;
+        SetState<MonsterHitState>(nameof(MonsterHitState));
     }
 }

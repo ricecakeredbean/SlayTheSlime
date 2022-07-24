@@ -39,6 +39,7 @@ public class MobPool : MonoBehaviour
         obj.SetActive(false);
         obj.transform.SetParent(transform);
         poolDic[key].stack.Push(obj);
+        GameManager.Instance.MobDeath++;
     }
 
 

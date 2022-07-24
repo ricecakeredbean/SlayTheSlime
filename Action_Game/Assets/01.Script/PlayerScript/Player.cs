@@ -5,41 +5,68 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     #region Varible
-    public GameObject weaponHit;
     public static Player Instance;
+
+    private int damage = 1;
+    public int Damage => damage;
+
+    private int hp = 100;
+    public int Hp => hp;
+
+    private CapsuleCollider2D pColider;
+    public CapsuleCollider2D PColider => pColider;
+
+    public GameObject weaponHit;
+
     private PlayerState currentState;
+
     [SerializeField] float moveSpeed = 5f;
     public float MoveSpeed => moveSpeed;
+
     private SpriteRenderer sprite;
     public SpriteRenderer Sprite => sprite;
+
     private Animator anim;
     public Animator Anim => anim;
+
+    private Color originColor;
+    public Color OriginColor => originColor;
+
     Dictionary<string, PlayerState> playerStateDic = new Dictionary<string, PlayerState>();
     #endregion
+    private void Awake()
+    {
+        Instance = this;
+        sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+        pColider = GetComponent<CapsuleCollider2D>();
+        SetState<PlayerIdleState>(nameof(PlayerIdleState));
+        InputManager.Instance.attackEvent += () => SetState<PlayerAttackState>(nameof(PlayerAttackState));
+        originColor = sprite.color;
+    }
     public void SetState<T>(string key) where T : PlayerState, new()
     {
-        if(!playerStateDic.ContainsKey(key))
+        if (!playerStateDic.ContainsKey(key))
         {
             //Debug.Log($"Added {key}");
             playerStateDic.Add(key, new T());
         }
-        if(currentState != null)
+        if (currentState != null)
         {
             currentState.OnExit();
         }
         currentState = playerStateDic[key];
         currentState.OnEnter(this);
     }
-    private void Awake()
-    {
-        Instance = this;
-        sprite = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
-        SetState<PlayerIdleState>(nameof(PlayerIdleState));
-        InputManager.Instance.attackEvent += () => SetState<PlayerAttackState>(nameof(PlayerAttackState));
-    }
     private void Update()
     {
         currentState.Update();
+        //Debug.Log(hp);
+    }
+
+    public void PlayerHit(int mDamage)
+    {
+        hp -= mDamage;
+        SetState<PlayerHitState>(nameof(PlayerHitState));
     }
 }
