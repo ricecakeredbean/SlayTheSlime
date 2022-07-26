@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private int hp = 100;
     public int Hp => hp;
 
+    public Sprite dieImage;
+
     private CapsuleCollider2D pColider;
     public CapsuleCollider2D PColider => pColider;
 
@@ -34,6 +36,7 @@ public class Player : MonoBehaviour
 
     Dictionary<string, PlayerState> playerStateDic = new Dictionary<string, PlayerState>();
     #endregion
+
     private void Awake()
     {
         Instance = this;
@@ -42,6 +45,7 @@ public class Player : MonoBehaviour
         pColider = GetComponent<CapsuleCollider2D>();
         SetState<PlayerIdleState>(nameof(PlayerIdleState));
         InputManager.Instance.attackEvent += () => SetState<PlayerAttackState>(nameof(PlayerAttackState));
+        InputManager.Instance.dashEvent += () => SetState<PlayerDashState>(nameof(PlayerDashState));
         originColor = sprite.color;
     }
     public void SetState<T>(string key) where T : PlayerState, new()
@@ -66,7 +70,14 @@ public class Player : MonoBehaviour
 
     public void PlayerHit(int mDamage)
     {
-        hp -= mDamage;
-        SetState<PlayerHitState>(nameof(PlayerHitState));
+        if(hp <= 0)
+        {
+            SetState<PlayerDieState>(nameof(PlayerDieState));
+        }
+        else
+        {
+            hp -= mDamage;
+            SetState<PlayerHitState>(nameof(PlayerHitState));
+        }
     }
 }

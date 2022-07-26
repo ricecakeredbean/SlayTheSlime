@@ -33,8 +33,9 @@ public class BigSlime : Monster
     IEnumerator ThrowMob()
     {
         Vector3 dash = Dir;
-        var obj = MobPool.Instance.GetObject(System.Enum.GetName(typeof(MobType), MobType.Slime));
+        var obj = ObjPool.Instance.GetObject(System.Enum.GetName(typeof(MobType), MobType.Slime));
         obj.transform.position = transform.position;
+        GameManager.Instance.MobCount++;
         for (float t = 0; t < 0.5f; t += Time.deltaTime)
         {
             obj.transform.Translate(dash * MoveSpeed * Time.deltaTime);

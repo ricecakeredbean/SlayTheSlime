@@ -73,6 +73,35 @@ public class PlayerAttackState : PlayerState
         cor = player.StartCoroutine(P_Attack());
     }
 }
+public class PlayerDashState : PlayerState
+{
+    Coroutine dashCor;
+    public override void OnEnter(Player player)
+    {
+        base.OnEnter(player);
+        if(dashCor == null)
+        {
+            player.Anim.SetBool("isDash", true);
+            dashCor = player.StartCoroutine(dash());
+        }
+        else
+        {
+            player.SetState<PlayerIdleState>(nameof(PlayerIdleState));
+        }
+    }
+    IEnumerator dash()
+    {
+        for(float t = 0; t<0.5; t+= Time.deltaTime)
+        {
+            player.transform.Translate(new Vector2(InputManager.Instance.MoveDir.x,InputManager.Instance.MoveDir.y) *20*Time.deltaTime);
+            yield return null;
+        }
+        player.Anim.SetBool("isDash", false);
+        player.SetState<PlayerIdleState>(nameof(PlayerIdleState));
+        yield return new WaitForSeconds(2f);
+        dashCor = null;
+    }
+}
 public class PlayerHitState : PlayerState
 {
     Coroutine hitCor;
@@ -89,11 +118,27 @@ public class PlayerHitState : PlayerState
 
     IEnumerator P_Hit()
     {
-        player.PColider.enabled = false;
         player.Sprite.color = new Color(1, 0, 0);
         yield return new WaitForSeconds(0.5f);
-        player.Sprite.color = player.OriginColor;
+        player.PColider.enabled = false;
         player.PColider.enabled = true;
+        player.Sprite.color = player.OriginColor;
+    }
+}
+public class PlayerDieState : PlayerState
+{
+    public override void OnEnter(Player player)
+    {
+        base.OnEnter(player);
+        player.Anim.SetBool("isDie",true);
+        GameManager.Instance.GameOver();
+        player.StartCoroutine(Die());
+    }
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(1.4f);
+        player.Anim.enabled = false;
+        player.Sprite.sprite = player.dieImage;
     }
 }
 #endregion

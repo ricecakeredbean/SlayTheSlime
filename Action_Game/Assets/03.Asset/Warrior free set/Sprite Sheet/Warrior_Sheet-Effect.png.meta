@@ -299,6 +299,9 @@ TextureImporter:
   - first:
       213: 787512443710130017
     second: Warrior_Sheet-Effect_98
+  - first:
+      213: 1667360231840587918
+    second: Warrior_Sheet-Effect_123
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -2498,6 +2501,27 @@ TextureImporter:
       bones: []
       spriteID: 167ca87256ecdea00800000000000000
       internalID: 787512443710130017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Warrior_Sheet-Effect_123
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 664
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e80a87bfb47a32710800000000000000
+      internalID: 1667360231840587918
       vertices: []
       indices: 
       edges: []

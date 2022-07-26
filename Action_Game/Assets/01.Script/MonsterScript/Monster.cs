@@ -136,7 +136,13 @@ public class Monster : MonoBehaviour
     }
     public void ReturnMe()
     {
-        MobPool.Instance.ReturnObject(System.Enum.GetName(typeof(MobType), MType),this.gameObject);
+        GameManager.Instance.MobCount--;
+        Debug.Log(GameManager.Instance.MobCount);
+        if (Random.Range(0, 10) <= 4)
+        {
+            GameManager.Instance.ItemSpawn(transform);
+        }
+        ObjPool.Instance.ReturnObject(System.Enum.GetName(typeof(MobType), MType),this.gameObject);
     }
     public virtual void Attack()
     {
