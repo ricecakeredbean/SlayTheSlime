@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-    public static UiManager Instance;
+    public static UIManager Instance;
 
     public Text[] texts;
     public Image[] images;
@@ -32,7 +32,7 @@ public class UiManager : MonoBehaviour
             }
         }
         texts[0].text = string.Format("Time : {0}:{1}", m, Mathf.Floor(time));
-        texts[1].text = string.Format("Coin : {0:##,###}", GameManager.Instance.Gold);
+        texts[1].text = $"{GameManager.Instance.Gold:000,000,000}";
         hpBar.value = Player.Instance.Hp;
         if (hpBar.value <= 0)
         {

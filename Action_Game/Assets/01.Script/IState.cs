@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-interface IState<T> where T : MonoBehaviour
+public interface IState<T> where T : MonoBehaviour
 {
     void OnEnter(T instnace);
     void Update();
@@ -82,14 +82,14 @@ public class PlayerDashState : PlayerState
         if(dashCor == null)
         {
             player.Anim.SetBool("isDash", true);
-            dashCor = player.StartCoroutine(dash());
+            dashCor = player.StartCoroutine(Dash());
         }
         else
         {
             player.SetState<PlayerIdleState>(nameof(PlayerIdleState));
         }
     }
-    IEnumerator dash()
+    IEnumerator Dash()
     {
         for(float t = 0; t<0.5; t+= Time.deltaTime)
         {
@@ -119,8 +119,8 @@ public class PlayerHitState : PlayerState
     IEnumerator P_Hit()
     {
         player.Sprite.color = new Color(1, 0, 0);
-        yield return new WaitForSeconds(0.5f);
         player.PColider.enabled = false;
+        yield return new WaitForSeconds(0.5f);
         player.PColider.enabled = true;
         player.Sprite.color = player.OriginColor;
     }

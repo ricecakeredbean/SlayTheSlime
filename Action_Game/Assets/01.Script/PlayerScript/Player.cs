@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    #region Varible
     public static Player Instance;
 
     private int damage = 1;
@@ -35,7 +34,6 @@ public class Player : MonoBehaviour
     public Color OriginColor => originColor;
 
     Dictionary<string, PlayerState> playerStateDic = new Dictionary<string, PlayerState>();
-    #endregion
 
     private void Awake()
     {
@@ -48,11 +46,9 @@ public class Player : MonoBehaviour
         InputManager.Instance.dashEvent += () => SetState<PlayerDashState>(nameof(PlayerDashState));
         originColor = sprite.color;
     }
-    public void SetState<T>(string key) where T : PlayerState, new()
-    {
+    public void SetState<T>(string key) where T : PlayerState, new(){
         if (!playerStateDic.ContainsKey(key))
         {
-            //Debug.Log($"Added {key}");
             playerStateDic.Add(key, new T());
         }
         if (currentState != null)
@@ -65,12 +61,11 @@ public class Player : MonoBehaviour
     private void Update()
     {
         currentState.Update();
-        //Debug.Log(hp);
     }
 
     public void PlayerHit(int mDamage)
     {
-        if(hp <= 0)
+        if (hp <= 0)
         {
             SetState<PlayerDieState>(nameof(PlayerDieState));
         }
