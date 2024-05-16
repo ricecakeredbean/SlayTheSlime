@@ -230,7 +230,7 @@ public class MonsterthrowAttackState : MonsterState
 
 public class MonsterHitState : MonsterState
 {
-    Coroutine cor;
+    private Coroutine cor;
     public override void OnEnter(Monster monster)
     {
         base.OnEnter(monster);

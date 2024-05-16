@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoSingleton<UIManager>
 {
-    public static UIManager Instance;
+    public GameObject idleUI;
 
-    public Text[] texts;
-    public Image[] images;
-    public Button[] buttons;
+    public GameObject gameEndUI;
+
+    public GameObject gameOverBG;
+
+    public Text gameEndText;
+
+    public Text timeText;
+    public Text coinText;
 
     public Slider hpBar;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
-
-    public void UiUpdate()
+    public void UIUpdate()
     {
         float time;
         int m = 0;
@@ -31,8 +31,8 @@ public class UIManager : MonoBehaviour
                 m++;
             }
         }
-        texts[0].text = string.Format("Time : {0}:{1}", m, Mathf.Floor(time));
-        texts[1].text = $"{GameManager.Instance.Gold:000,000,000}";
+        timeText.text = $"Time : {m:00}:{time:00.00}";
+        coinText.text = $"{GameManager.Instance.Gold:000,000,000}";
         hpBar.value = Player.Instance.Hp;
         if (hpBar.value <= 0)
         {
@@ -40,38 +40,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void GameOverUi()
+    public void GameOverUI()
     {
-        for (int i = 0; i < texts.Length - 2; i++)
-        {
-            texts[i].enabled = false;
-        }
-        for (int i = 0; i < images.Length; i++)
-        {
-            images[i].enabled = false;
-        }
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            buttons[i].gameObject.SetActive(true);
-        }
-        texts[2].gameObject.SetActive(true);
+        idleUI.SetActive(false);
+        gameEndUI.SetActive(true);
+        gameEndText.text = "Game Over";
+        gameEndText.color = Color.red;
+        gameOverBG.SetActive(true);
     }
 
     public void WinUi()
     {
-        for (int i = 0; i < texts.Length - 1; i++)
-        {
-            texts[i].enabled = false;
-        }
-        for (int i = 0; i < images.Length-1; i++)
-        {
-            images[i].enabled = false;
-        }
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            buttons[i].gameObject.SetActive(true);
-        }
-        images[2].gameObject.SetActive(true);
-        texts[3].gameObject.SetActive(true);
+        idleUI.SetActive(false);
+        gameEndUI.SetActive(true);
     }
 }

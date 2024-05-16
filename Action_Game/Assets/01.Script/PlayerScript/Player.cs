@@ -42,10 +42,15 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         pColider = GetComponent<CapsuleCollider2D>();
         SetState<PlayerIdleState>(nameof(PlayerIdleState));
-        InputManager.Instance.attackEvent += () => SetState<PlayerAttackState>(nameof(PlayerAttackState));
-        InputManager.Instance.dashEvent += () => SetState<PlayerDashState>(nameof(PlayerDashState));
         originColor = sprite.color;
     }
+
+    private void Start()
+    {
+        InputManager.Instance.attackEvent += () => SetState<PlayerAttackState>(nameof(PlayerAttackState));
+        InputManager.Instance.dashEvent += () => SetState<PlayerDashState>(nameof(PlayerDashState));
+    }
+
     public void SetState<T>(string key) where T : PlayerState, new(){
         if (!playerStateDic.ContainsKey(key))
         {

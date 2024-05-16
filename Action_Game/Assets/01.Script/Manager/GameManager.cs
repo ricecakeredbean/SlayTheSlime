@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
         {
             StageCheck();
         }
-        UIManager.Instance.UiUpdate();
+        UIManager.Instance.UIUpdate();
     }
 
     public void ItemSpawn(Transform spawntrans)
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     { 
         gameOverFloor.SetActive(true);
-        UIManager.Instance.GameOverUi();
+        UIManager.Instance.GameOverUI();
     }
 
     IEnumerator Mob_Spawn(StageInfo info)

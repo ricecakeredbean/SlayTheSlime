@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Coin : Item
 {
-    protected override void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             GameManager.Instance.Gold += 100;
+            ReturnItem();
         }
-        base.OnCollisionEnter2D(collision);
     }
 }

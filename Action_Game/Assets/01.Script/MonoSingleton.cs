@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    protected static T instance;
-    public static T Instance
+    public static T Instance;
+
+    protected virtual void Awake()
     {
-        get
-        {
-            if(!instance)
-            {
-                GameObject container = new GameObject();
-                instance = container.AddComponent<T>();
-            }
-            return instance;
-        }
+        Instance = this as T;
     }
+    //public static T Instance
+    //{
+    //    get
+    //    {
+    //        if(!instance)
+    //        {
+    //            GameObject container = new GameObject();
+    //            instance = container.AddComponent<T>();
+    //        }
+    //        return instance;
+    //    }
+    //}
 }
