@@ -15,6 +15,7 @@ public class UIManager : MonoSingleton<UIManager>
 
     public Text timeText;
     public Text coinText;
+    public Text leftEnemy;
 
     public Slider hpBar;
 
@@ -33,6 +34,7 @@ public class UIManager : MonoSingleton<UIManager>
         }
         timeText.text = $"Time : {m:00}:{time:00.00}";
         coinText.text = $"{GameManager.Instance.Gold:000,000,000}";
+        leftEnemy.text = $"남은 적 : {GameManager.Instance.MobCount}마리";
         hpBar.value = Player.Instance.Hp;
         if (hpBar.value <= 0)
         {
@@ -52,6 +54,8 @@ public class UIManager : MonoSingleton<UIManager>
     public void WinUi()
     {
         idleUI.SetActive(false);
+        gameEndText.text = "Game Clear";
+        gameEndText.color = Color.yellow;
         gameEndUI.SetActive(true);
     }
 }
